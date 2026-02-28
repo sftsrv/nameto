@@ -56,17 +56,6 @@ func renameFile(old, new string) error {
 	return nil
 }
 
-func RenameFiles(changes Changes) error {
-	for _, change := range changes {
-		err := renameFile(change.Old, change.New)
-		if err != nil {
-			return err
-		}
-	}
-
-	return nil
-}
-
 // implementation from https://stackoverflow.com/questions/21060945/simple-way-to-copy-a-file
 func copyFile(old, new string) error {
 	if exists(new) {
@@ -96,9 +85,16 @@ func copyFile(old, new string) error {
 	return nil
 }
 
-func CopyFiles(changes Changes) error {
+func PersistChanges(changes Changes) error {
 	for _, change := range changes {
-		err := copyFile(change.Old, change.New)
+		var err error
+		switch change.Mode {
+		case ChangeModeCopy:
+			err = copyFile(change.Old, change.New)
+		case ChangeModeRename:
+			err = renameFile(change.Old, change.New)
+		}
+
 		if err != nil {
 			return err
 		}

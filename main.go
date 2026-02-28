@@ -127,9 +127,5 @@ func main() {
 	}
 
 	fmt.Println("Executing changes")
-	if rename {
-		lib.RenameFiles(changes)
-	} else {
-		lib.CopyFiles(changes)
-	}
+	lib.PersistChanges(changes)
 }
