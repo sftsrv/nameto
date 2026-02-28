@@ -26,7 +26,6 @@ func generateChange(path string, re *regexp.Regexp, pattern string) Change {
 			}
 
 			for _, replacer := range replacers {
-				fmt.Printf("%s: %s\n", replacer, submatch)
 				result = strings.ReplaceAll(result, replacer, submatch)
 			}
 		}
@@ -39,8 +38,8 @@ func generateChange(path string, re *regexp.Regexp, pattern string) Change {
 	return Change{path, result}
 }
 
-func GenerateChanges(paths []string, re *regexp.Regexp, pattern string) []Change {
-	result := []Change{}
+func GenerateChanges(paths []string, re *regexp.Regexp, pattern string) Changes {
+	result := Changes{}
 
 	for _, p := range paths {
 		change := generateChange(p, re, pattern)

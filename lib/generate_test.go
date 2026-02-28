@@ -9,7 +9,7 @@ import (
 )
 
 func TestSimplePattern(t *testing.T) {
-	expected := []lib.Change{
+	expected := lib.Changes{
 		{"my/path/1.txt", "new/my/path/1.txt"},
 		{"my/path/2.txt", "new/my/path/2.txt"},
 	}
@@ -30,7 +30,7 @@ func TestSimplePattern(t *testing.T) {
 }
 
 func TestNamedGroups(t *testing.T) {
-	expected := []lib.Change{
+	expected := lib.Changes{
 		{"my/first/1.txt", "my/new/first_path_1.txt"},
 		{"my/second/2.txt", "my/new/second_path_2.txt"},
 	}
@@ -51,7 +51,7 @@ func TestNamedGroups(t *testing.T) {
 }
 
 func TestUnnamedGroups(t *testing.T) {
-	expected := []lib.Change{
+	expected := lib.Changes{
 		{"my/first/1.txt", "my/new/first_path_1.txt"},
 		{"my/second/2.txt", "my/new/second_path_2.txt"},
 	}

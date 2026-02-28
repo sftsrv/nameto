@@ -6,7 +6,7 @@ import (
 	"regexp"
 )
 
-func FindPaths(re regexp.Regexp) []string {
+func FindPaths(re *regexp.Regexp) []string {
 	var paths []string
 
 	filepath.WalkDir(".",
@@ -15,7 +15,7 @@ func FindPaths(re regexp.Regexp) []string {
 				return err
 			}
 
-			isMatch := !re.MatchString(path)
+			isMatch := re.MatchString(path)
 			if d.IsDir() || !isMatch {
 				return nil
 			}

@@ -9,11 +9,11 @@ import (
 
 func TestParseValid(t *testing.T) {
 	content := `# some example paths to parse
-from/my/path.txt to/my/path.txt
-     some/more_complicated.path/to          another/.poorly.formatted_type./path
+from/my/path.txt -> to/my/path.txt
+     some/more_complicated.path/to  ->        another/.poorly.formatted_type./path
 `
 
-	expected := []lib.Change{
+	expected := lib.Changes{
 		{"from/my/path.txt", "to/my/path.txt"},
 		{"some/more_complicated.path/to", "another/.poorly.formatted_type./path"},
 	}
@@ -21,13 +21,13 @@ from/my/path.txt to/my/path.txt
 	result, _ := lib.ParseFile(content)
 
 	if !reflect.DeepEqual(result, expected) {
-		t.Errorf("Expected %s but got %s", expected, result)
+		t.Errorf("Expected %v but got %v", expected, result)
 	}
 }
 
 func TestParseInvalid(t *testing.T) {
 	content := `# some example paths to parse
-	this/file/has/some/weird/structure.x
+	this/file/has/some/weird/structure.x without/correct/separator
 `
 
 	_, err := lib.ParseFile(content)

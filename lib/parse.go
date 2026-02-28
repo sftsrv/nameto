@@ -6,16 +6,11 @@ import (
 	"strings"
 )
 
-type Change struct {
-	Old string
-	New string
-}
-
-var spaces = regexp.MustCompile(`\s+`)
+var separator = regexp.MustCompile(`\s+->\s+`)
 
 func parseLine(line string) (Change, error) {
 	l := strings.TrimSpace(line)
-	parts := spaces.Split(l, -1)
+	parts := separator.Split(l, -1)
 
 	if len(parts) != 2 {
 		return Change{}, fmt.Errorf("line did not match the expected structure:\n%s", line)
@@ -27,8 +22,8 @@ func parseLine(line string) (Change, error) {
 	return Change{old, new}, nil
 }
 
-func ParseFile(content string) ([]Change, error) {
-	result := []Change{}
+func ParseFile(content string) (Changes, error) {
+	result := Changes{}
 
 	lines := strings.Lines(content)
 	for l := range lines {
