@@ -58,7 +58,7 @@ func renameFile(old, new string) error {
 
 func RenameFiles(changes Changes) error {
 	for _, change := range changes {
-		err := os.Rename(change.Old, change.New)
+		err := renameFile(change.Old, change.New)
 		if err != nil {
 			return err
 		}
