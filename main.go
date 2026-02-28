@@ -62,7 +62,7 @@ func main() {
 	dryRunFlag := flag.Bool("dry-run", false, "print out results, do not execute changes")
 	editorFlag := flag.String("editor", defaultEditor, "editor to edit file paths with")
 
-	copyFlag := flag.Bool("c", false, "copy files by default instead of rename")
+	renameFlag := flag.Bool("c", false, "rename files by default instead of copy")
 	fromFlag := flag.String("f", ".*", "regex for matching files")
 	toFlag := flag.String("t", "$", "pattern to use when renaming files")
 	noEditFlag := flag.Bool("y", false, "accept changes without previewing or editing")
@@ -76,6 +76,7 @@ func main() {
 	}
 
 	var changeFile string
+	rename := *renameFlag
 
 	if *fileFlag != "" {
 		file, err := os.ReadFile(*fileFlag)
@@ -92,7 +93,12 @@ func main() {
 
 		paths := lib.FindPaths(re)
 
-		changes := lib.GenerateChanges(paths, re, *toFlag)
+		var mode lib.ChangeMode = lib.ChangeModeCopy
+		if rename {
+			mode = lib.ChangeModeRename
+		}
+
+		changes := lib.GenerateChanges(mode, paths, re, *toFlag)
 		changeFile = changes.String()
 	}
 
@@ -121,9 +127,9 @@ func main() {
 	}
 
 	fmt.Println("Executing changes")
-	if *copyFlag {
-		lib.CopyFiles(changes)
-	} else {
+	if rename {
 		lib.RenameFiles(changes)
+	} else {
+		lib.CopyFiles(changes)
 	}
 }

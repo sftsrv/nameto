@@ -10,8 +10,8 @@ import (
 
 func TestSimplePattern(t *testing.T) {
 	expected := lib.Changes{
-		{"my/path/1.txt", "new/my/path/1.txt"},
-		{"my/path/2.txt", "new/my/path/2.txt"},
+		{lib.ChangeModeCopy, "my/path/1.txt", "new/my/path/1.txt"},
+		{lib.ChangeModeCopy, "my/path/2.txt", "new/my/path/2.txt"},
 	}
 
 	paths := []string{}
@@ -22,7 +22,7 @@ func TestSimplePattern(t *testing.T) {
 	re := regexp.MustCompile("my/path/.*")
 	pattern := "new/$"
 
-	result := lib.GenerateChanges(paths, re, pattern)
+	result := lib.GenerateChanges(lib.ChangeModeCopy, paths, re, pattern)
 
 	if !reflect.DeepEqual(result, expected) {
 		t.Errorf("Expected %s but got %s", expected, result)
@@ -31,8 +31,8 @@ func TestSimplePattern(t *testing.T) {
 
 func TestNamedGroups(t *testing.T) {
 	expected := lib.Changes{
-		{"my/first/1.txt", "my/new/first_path_1.txt"},
-		{"my/second/2.txt", "my/new/second_path_2.txt"},
+		{lib.ChangeModeCopy, "my/first/1.txt", "my/new/first_path_1.txt"},
+		{lib.ChangeModeCopy, "my/second/2.txt", "my/new/second_path_2.txt"},
 	}
 
 	paths := []string{}
@@ -43,7 +43,7 @@ func TestNamedGroups(t *testing.T) {
 	re := regexp.MustCompile(`my/(?P<prefix>\w*)/(?P<name>.*)`)
 	pattern := "my/new/$prefix_path_$<name>"
 
-	result := lib.GenerateChanges(paths, re, pattern)
+	result := lib.GenerateChanges(lib.ChangeModeCopy, paths, re, pattern)
 
 	if !reflect.DeepEqual(result, expected) {
 		t.Errorf("Expected %s but got %s", expected, result)
@@ -52,8 +52,8 @@ func TestNamedGroups(t *testing.T) {
 
 func TestUnnamedGroups(t *testing.T) {
 	expected := lib.Changes{
-		{"my/first/1.txt", "my/new/first_path_1.txt"},
-		{"my/second/2.txt", "my/new/second_path_2.txt"},
+		{lib.ChangeModeCopy, "my/first/1.txt", "my/new/first_path_1.txt"},
+		{lib.ChangeModeCopy, "my/second/2.txt", "my/new/second_path_2.txt"},
 	}
 
 	paths := []string{}
@@ -64,7 +64,7 @@ func TestUnnamedGroups(t *testing.T) {
 	re := regexp.MustCompile(`my/(\w*)/(.*)`)
 	pattern := "my/new/$1_path_$2"
 
-	result := lib.GenerateChanges(paths, re, pattern)
+	result := lib.GenerateChanges(lib.ChangeModeCopy, paths, re, pattern)
 
 	if !reflect.DeepEqual(result, expected) {
 		t.Errorf("Expected %s but got %s", expected, result)

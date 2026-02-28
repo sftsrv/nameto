@@ -9,19 +9,19 @@ import (
 
 func TestParseValid(t *testing.T) {
 	content := `# some example paths to parse
-from/my/path.txt -> to/my/path.txt
-     some/more_complicated.path/to  ->        another/.poorly.formatted_type./path
+C from/my/path.txt -> to/my/path.txt
+  R   some/more_complicated.path/to  ->        another/.poorly.formatted_type./path
 `
 
 	expected := lib.Changes{
-		{"from/my/path.txt", "to/my/path.txt"},
-		{"some/more_complicated.path/to", "another/.poorly.formatted_type./path"},
+		{lib.ChangeModeCopy, "from/my/path.txt", "to/my/path.txt"},
+		{lib.ChangeModeRename, "some/more_complicated.path/to", "another/.poorly.formatted_type./path"},
 	}
 
 	result, _ := lib.ParseFile(content)
 
 	if !reflect.DeepEqual(result, expected) {
-		t.Errorf("Expected %v but got %v", expected, result)
+		t.Errorf("Expected:\n%v \n\nbut got:\n%v", expected, result)
 	}
 }
 

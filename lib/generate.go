@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-func generateChange(path string, re *regexp.Regexp, pattern string) Change {
+func generateChange(mode ChangeMode, path string, re *regexp.Regexp, pattern string) Change {
 	result := pattern
 	names := re.SubexpNames()
 
@@ -35,14 +35,14 @@ func generateChange(path string, re *regexp.Regexp, pattern string) Change {
 	// This is a convenience syntax for $0
 	result = strings.ReplaceAll(result, "$", path)
 
-	return Change{path, result}
+	return Change{mode, path, result}
 }
 
-func GenerateChanges(paths []string, re *regexp.Regexp, pattern string) Changes {
+func GenerateChanges(mode ChangeMode, paths []string, re *regexp.Regexp, pattern string) Changes {
 	result := Changes{}
 
 	for _, p := range paths {
-		change := generateChange(p, re, pattern)
+		change := generateChange(mode, p, re, pattern)
 		result = append(result, change)
 	}
 

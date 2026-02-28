@@ -10,8 +10,8 @@ import (
 func TestGenratedChangeParses(t *testing.T) {
 
 	input := lib.Changes{
-		{"from/my/path.txt", "to/my/path.txt"},
-		{"some/more_complicated.path/to", "another/.poorly.formatted_type./path"},
+		{lib.ChangeModeRename, "from/my/path.txt", "to/my/path.txt"},
+		{lib.ChangeModeCopy, "some/more_complicated.path/to", "another/.poorly.formatted_type./path"},
 	}
 
 	output, _ := lib.ParseFile(input.String())
