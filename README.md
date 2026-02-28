@@ -1,6 +1,6 @@
 # nameto
 
-A utility for bulk renaming and copying of files
+A utility for bulk file management
 
 ## Installation
 
@@ -22,11 +22,10 @@ nameto --help
 
 ## Features
 
-- [ ] Regex based file matching
-- [ ] Copy a file
-- [ ] Rename a file
-- [ ] Automatically create directories
-- [ ] Preview files to be moved/copied
-- [ ] Get list of files to work with from stdin
-- [ ] Get list of files to work with from existing file
+- [x] Regex based file matching
+- [x] Copy a file
+- [x] Rename a file
+- [x] Automatically create directories
+- [x] Preview files to be moved/copied
+- [x] Get list of files to work with from existing file
 - [ ] Support files with spaces (Will implement this if it ever becomes something I care about)
