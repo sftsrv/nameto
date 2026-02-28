@@ -62,7 +62,7 @@ func main() {
 	dryRunFlag := flag.Bool("dry-run", false, "print out results, do not execute changes")
 	editorFlag := flag.String("editor", defaultEditor, "editor to edit file paths with")
 
-	renameFlag := flag.Bool("c", false, "rename files by default instead of copy")
+	renameFlag := flag.Bool("r", false, "rename files by default instead of copy")
 	fromFlag := flag.String("f", ".*", "regex for matching files")
 	toFlag := flag.String("t", "$", "pattern to use when renaming files")
 	noEditFlag := flag.Bool("y", false, "accept changes without previewing or editing")
