@@ -32,6 +32,7 @@ func ParseFile(content string) (Changes, error) {
 
 	lines := strings.Lines(content)
 	for l := range lines {
+		l = strings.TrimSpace(l)
 		if l == "" || l[0] == '#' {
 			continue
 		}

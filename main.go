@@ -82,6 +82,16 @@ References in pattern are indicated with a '$' in the pattern
 	
 `
 
+const header = `# Lines starting with a # are ignored
+# Changes in this file are defined as follows:
+#
+# R old/path/rename -> new/path/for/rename
+# C old/path/copy -> new/path/for/copy
+#
+# Your changes can be seen below
+
+`
+
 func main() {
 	defaultEditor, _ := os.LookupEnv("EDITOR")
 
@@ -136,7 +146,7 @@ func main() {
 	if edit {
 		editor := *editorFlag
 		fmt.Println("Opening changes with", editor)
-		result, err := lib.EditFile(editor, changeFile)
+		result, err := lib.EditFile(editor, header+changeFile)
 		if err != nil {
 			panic(fmt.Errorf("Error editing file with %s with error: %v", *editorFlag, err))
 		}
