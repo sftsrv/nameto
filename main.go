@@ -28,17 +28,17 @@ references in pattern are indicated with a $ in the pattern
 `
 
 func main() {
-	// defaultEditor, _ := os.LookupEnv("EDITOR")
+	defaultEditor, _ := os.LookupEnv("EDITOR")
 
 	helpFlag := flag.Bool("help", false, "show usage info")
 	fileFlag := flag.String("from-file", "", "use an existing changeset instead of creating one")
 	dryRunFlag := flag.Bool("dry-run", false, "print out results, do not execute changes")
-	// editorFlag := flag.String("editor", defaultEditor, "editor to edit file paths with")
+	editorFlag := flag.String("editor", defaultEditor, "editor to edit file paths with")
 
 	// copyFlag := flag.Bool("c", false, "copy files instead of rename")
 	fromFlag := flag.String("f", ".*", "regex for matching files")
 	toFlag := flag.String("t", "$", "pattern to use when renaming files")
-	// noEditFlag := flag.Bool("y", false, "accept changes without previewing or editing")
+	noEditFlag := flag.Bool("y", false, "accept changes without previewing or editing")
 
 	flag.Parse()
 
@@ -73,4 +73,25 @@ func main() {
 		fmt.Println(changeFile)
 		return
 	}
+
+	edit := !*noEditFlag
+	if edit {
+		editor := *editorFlag
+		fmt.Println("Opening changes with", editor)
+		result, err := lib.EditFile(editor, changeFile)
+		if err != nil {
+			panic(fmt.Errorf("Error editing file with %s with error: %v", *editorFlag, err))
+		}
+
+		fmt.Println("Editing complete")
+
+		changeFile = result
+	}
+
+	changes, err := lib.ParseFile(changeFile)
+	if err != nil {
+		panic(fmt.Errorf("Error parsing change file: %v", err))
+	}
+
+	fmt.Println(changes)
 }
