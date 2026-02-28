@@ -6,10 +6,10 @@ import (
 	"regexp"
 )
 
-func FindPaths(root string, re regexp.Regexp) []string {
+func FindPaths(re regexp.Regexp) []string {
 	var paths []string
 
-	filepath.WalkDir(root,
+	filepath.WalkDir(".",
 		func(path string, d fs.DirEntry, err error) error {
 			if err != nil {
 				return err
