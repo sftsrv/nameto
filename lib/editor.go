@@ -18,6 +18,11 @@ func EditFile(editor string, content string) (string, error) {
 		return content, err
 	}
 
+	err = file.Close()
+	if err != nil {
+		return content, err
+	}
+
 	cmd := exec.Command(editor, path)
 	cmd.Stdin = os.Stdin
 	cmd.Stdout = os.Stdout
