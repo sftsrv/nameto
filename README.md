@@ -22,24 +22,33 @@ nameto --help
 
 `nameto` can be used in a few different ways:
 
-### Using Existing Changeset File
-
-```sh
-# escaping of regex special chars will depend on your shell
-nameto -f `.*\.go` -t 'new/path/$' --from-file 
-```
 
 ### Interactively Editing Changeset Using Your Configured $EDITOR
 
 ```sh
-nameto -f `.*\.go` -t 'new/path/$'
+nameto -f `.*\.go` -t 'new/path/$' 
+
+# commit changes
+nameto -f `.*\.go` -t 'new/path/$' --commit
 ```
 
-### Or Using a Dry-Run and Then Accepting If All Looks Good:
+### Using a Dry-Run and Auto Accepting
 
 ```sh
-nameto -f `.*\.go` -t 'new/path/$' --dry-run
-nameto -f `.*\.go` -t 'new/path/$' -y
+nameto -f `.*\.go` -t 'new/path/$'
+
+# commit changes
+nameto -f `.*\.go` -t 'new/path/$' --commit -y
+```
+
+### Using Existing Changeset File
+
+```sh
+# escaping of regex special chars will depend on your shell
+nameto -f `.*\.go` -t 'new/path/$' --from-file path/to/changeset
+
+# commit changes
+nameto -f `.*\.go` -t 'new/path/$' --from-file path/to/changset --commit
 ```
 
 ## Additional Details

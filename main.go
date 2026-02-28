@@ -22,24 +22,33 @@ nameto --help
 
 'nameto' can be used in a few different ways:
 
-### Using Existing Changeset File
-
-'''sh
-# escaping of regex special chars will depend on your shell
-nameto -f '.*\.go' -t 'new/path/$' --from-file 
-'''
 
 ### Interactively Editing Changeset Using Your Configured $EDITOR
 
 '''sh
-nameto -f '.*\.go' -t 'new/path/$'
+nameto -f '.*\.go' -t 'new/path/$' 
+
+# commit changes
+nameto -f '.*\.go' -t 'new/path/$' --commit
 '''
 
-### Or Using a Dry-Run and Then Accepting If All Looks Good:
+### Using a Dry-Run and Auto Accepting
 
 '''sh
-nameto -f '.*\.go' -t 'new/path/$' --dry-run
-nameto -f '.*\.go' -t 'new/path/$' -y
+nameto -f '.*\.go' -t 'new/path/$'
+
+# commit changes
+nameto -f '.*\.go' -t 'new/path/$' --commit -y
+'''
+
+### Using Existing Changeset File
+
+'''sh
+# escaping of regex special chars will depend on your shell
+nameto -f '.*\.go' -t 'new/path/$' --from-file path/to/changeset
+
+# commit changes
+nameto -f '.*\.go' -t 'new/path/$' --from-file path/to/changset --commit
 '''
 
 ## Additional Details
@@ -78,7 +87,7 @@ func main() {
 
 	helpFlag := flag.Bool("help", false, "show usage info")
 	fileFlag := flag.String("from-file", "", "use an existing changeset instead of creating one")
-	dryRunFlag := flag.Bool("dry-run", false, "print out results, do not execute changes")
+	commitFlag := flag.Bool("commit", false, "execute changes")
 	editorFlag := flag.String("editor", defaultEditor, "editor to edit file paths with")
 
 	renameFlag := flag.Bool("r", false, "rename files by default instead of copy")
@@ -121,11 +130,6 @@ func main() {
 		changeFile = changes.String()
 	}
 
-	if *dryRunFlag {
-		fmt.Println(changeFile)
-		return
-	}
-
 	edit := !*noEditFlag
 	if edit {
 		editor := *editorFlag
@@ -143,6 +147,12 @@ func main() {
 	changes, err := lib.ParseFile(changeFile)
 	if err != nil {
 		panic(fmt.Errorf("Error parsing change file: %v", err))
+	}
+
+	commit := *commitFlag
+	if !commit {
+		fmt.Println(changeFile)
+		return
 	}
 
 	fmt.Println("Executing changes")
