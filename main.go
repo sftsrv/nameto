@@ -26,19 +26,19 @@ nameto --help
 ### Interactively Editing Changeset Using Your Configured $EDITOR
 
 '''sh
-nameto -f '.*\.go' -t 'new/path/$' 
+nameto -f '.*\.go' -t 'new/path/$'
 
 # commit changes
-nameto -f '.*\.go' -t 'new/path/$' --commit
+nameto -f '.*\.go' -t 'new/path/$' --commit --edit
 '''
 
-### Using a Dry-Run and Auto Accepting
+### Using a Dry-Run and Accepting Changes
 
 '''sh
 nameto -f '.*\.go' -t 'new/path/$'
 
 # commit changes
-nameto -f '.*\.go' -t 'new/path/$' --commit -y
+nameto -f '.*\.go' -t 'new/path/$' --commit
 '''
 
 ### Using Existing Changeset File
@@ -57,9 +57,9 @@ nameto -f '.*\.go' -t 'new/path/$' --from-file path/to/changset --commit
 
 A changeset looks like so:
 
-### Commented-out Lines Start with a Hash
 
 '''
+# Commented-out Lines Start with a Hash
 R old/path/rename -> new/path/for/rename
 C old/path/copy -> new/path/for/copy
 '''
@@ -93,7 +93,7 @@ func main() {
 	renameFlag := flag.Bool("r", false, "rename files by default instead of copy")
 	fromFlag := flag.String("f", ".*", "regex for matching files")
 	toFlag := flag.String("t", "$", "pattern to use when renaming files")
-	noEditFlag := flag.Bool("y", false, "accept changes without previewing or editing")
+	editFlag := flag.Bool("edit", false, "accept changes without editing")
 
 	flag.Parse()
 
@@ -130,7 +130,9 @@ func main() {
 		changeFile = changes.String()
 	}
 
-	edit := !*noEditFlag
+	commit := *commitFlag
+	edit := *editFlag
+
 	if edit {
 		editor := *editorFlag
 		fmt.Println("Opening changes with", editor)
@@ -149,7 +151,6 @@ func main() {
 		panic(fmt.Errorf("Error parsing change file: %v", err))
 	}
 
-	commit := *commitFlag
 	if !commit {
 		fmt.Println(changeFile)
 		return

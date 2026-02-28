@@ -26,19 +26,19 @@ nameto --help
 ### Interactively Editing Changeset Using Your Configured $EDITOR
 
 ```sh
-nameto -f `.*\.go` -t 'new/path/$' 
+nameto -f `.*\.go` -t 'new/path/$'
 
 # commit changes
-nameto -f `.*\.go` -t 'new/path/$' --commit
+nameto -f `.*\.go` -t 'new/path/$' --commit --edit
 ```
 
-### Using a Dry-Run and Auto Accepting
+### Using a Dry-Run and Accepting Changes
 
 ```sh
 nameto -f `.*\.go` -t 'new/path/$'
 
 # commit changes
-nameto -f `.*\.go` -t 'new/path/$' --commit -y
+nameto -f `.*\.go` -t 'new/path/$' --commit
 ```
 
 ### Using Existing Changeset File
@@ -57,9 +57,8 @@ nameto -f `.*\.go` -t 'new/path/$' --from-file path/to/changset --commit
 
 A changeset looks like so:
 
-### Commented-out Lines Start with a Hash
-
 ```
+# Commented-out Lines Start with a Hash
 R old/path/rename -> new/path/for/rename
 C old/path/copy -> new/path/for/copy
 ```
