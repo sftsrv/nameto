@@ -10,48 +10,67 @@ import (
 
 const usage = `nameto
 
-nameto can be used in a few different ways:
+A utility for bulk file management
 
-1. Using an existing changeset file
+## Usage
 
-# escaping of regex \ will depend on your shell
-$ nameto -f '.*\.go' -t 'new/path/$' --from-file 
+You can use the '--help' flag to view usage information:
 
-2. Interactively editing chageset using your configured $EDITOR
+'''sh
+nameto --help
+'''
 
-$ nameto -f '.*\.go' -t 'new/path/$'
+'nameto' can be used in a few different ways:
 
-3. Or using a dry-run and then accepting if all looks good:
+### Using Existing Changeset File
 
-$ nameto -f '.*\.go' -t 'new/path/$' --dry-run
-$ nameto -f '.*\.go' -t 'new/path/$' -y
- 
+'''sh
+# escaping of regex special chars will depend on your shell
+nameto -f '.*\.go' -t 'new/path/$' --from-file 
+'''
 
-Additonal details
+### Interactively Editing Changeset Using Your Configured $EDITOR
 
-> changeset format
+'''sh
+nameto -f '.*\.go' -t 'new/path/$'
+'''
+
+### Or Using a Dry-Run and Then Accepting If All Looks Good:
+
+'''sh
+nameto -f '.*\.go' -t 'new/path/$' --dry-run
+nameto -f '.*\.go' -t 'new/path/$' -y
+'''
+
+## Additional Details
+
+### Changeset Format
 
 A changeset looks like so:
 
-# commented out lines start with a hash
+### Commented-out Lines Start with a Hash
+
+'''
 R old/path/rename -> new/path/for/rename
 C old/path/copy -> new/path/for/copy
+'''
 
-> using regexes
+### Using Regexes
 
 The structure of the regexp provided should be compatible with Go's implementation,
 with the following affordances made:
 
-1. named capture groups can be specified as '<name>' instead of '?P<name>'
-2. regexes are always matched against a single line - so multiline captures are not meaningful
+1. Named capture groups can be specified as '<name>' instead of '?P<name>'
+2. Regexes are always matched against a single line - so multiline captures are not meaningful
 
-> using patterns
+### Using Patterns
 
-references in pattern are indicated with a $ in the pattern
+References in pattern are indicated with a '$' in the pattern
+
 	- '$' refers to the entire match
 	- '$0' (entire match), '$1' (first capture group), etc. refer to capture groups in order of capture
 	- '$<name>' or '$name' refer to named capture groups
-
+	
 `
 
 func main() {

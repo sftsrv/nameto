@@ -20,6 +20,57 @@ You can use the `--help` flag to view usage information:
 nameto --help
 ```
 
+`nameto` can be used in a few different ways:
+
+### Using Existing Changeset File
+
+```sh
+# escaping of regex special chars will depend on your shell
+nameto -f `.*\.go` -t 'new/path/$' --from-file 
+```
+
+### Interactively Editing Changeset Using Your Configured $EDITOR
+
+```sh
+nameto -f `.*\.go` -t 'new/path/$'
+```
+
+### Or Using a Dry-Run and Then Accepting If All Looks Good:
+
+```sh
+nameto -f `.*\.go` -t 'new/path/$' --dry-run
+nameto -f `.*\.go` -t 'new/path/$' -y
+```
+
+## Additional Details
+
+### Changeset Format
+
+A changeset looks like so:
+
+### Commented-out Lines Start with a Hash
+
+```
+R old/path/rename -> new/path/for/rename
+C old/path/copy -> new/path/for/copy
+```
+
+### Using Regexes
+
+The structure of the regexp provided should be compatible with Go's implementation,
+with the following affordances made:
+
+1. Named capture groups can be specified as '<name>' instead of '?P<name>'
+2. Regexes are always matched against a single line - so multiline captures are not meaningful
+
+### Using Patterns
+
+References in pattern are indicated with a `$` in the pattern
+
+	- `$` refers to the entire match
+	- `$0` (entire match), `$1` (first capture group), etc. refer to capture groups in order of capture
+	- `$<name>` or `$name` refer to named capture groups
+
 ## Features
 
 - [x] Regex based file matching
