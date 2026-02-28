@@ -93,6 +93,7 @@ func main() {
 		panic(fmt.Errorf("Error parsing change file: %v", err))
 	}
 
+	fmt.Println("Executing changes")
 	if *copyFlag {
 		lib.CopyFiles(changes)
 	} else {

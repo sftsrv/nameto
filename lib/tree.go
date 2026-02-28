@@ -43,11 +43,6 @@ func renameFile(old, new string) error {
 		return fmt.Errorf("Path already exists, will not overwrite %s", new)
 	}
 
-	dir := filepath.Dir(new)
-	if !exists(dir) {
-		os.MkdirAll(dir, os.ModePerm)
-	}
-
 	err := copyFile(old, new)
 	if err != nil {
 		return err
@@ -76,6 +71,11 @@ func RenameFiles(changes Changes) error {
 func copyFile(old, new string) error {
 	if exists(new) {
 		return fmt.Errorf("Path already exists, will not overwrite %s", new)
+	}
+
+	dir := filepath.Dir(new)
+	if !exists(dir) {
+		os.MkdirAll(dir, os.ModePerm)
 	}
 
 	o, err := os.Open(old)
