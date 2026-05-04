@@ -11,6 +11,8 @@ func generateChange(mode ChangeMode, path string, re *regexp.Regexp, pattern str
 	result := pattern
 	names := re.SubexpNames()
 
+	// Custom replacer to ensure that we can support things like:
+	// my/new/$prefix_path_$name correctly
 	matches := re.FindAllStringSubmatch(path, -1)
 	for _, match := range matches {
 		for groupIndex, submatch := range match {
@@ -20,14 +22,8 @@ func generateChange(mode ChangeMode, path string, re *regexp.Regexp, pattern str
 				groupName = strconv.Itoa(groupIndex)
 			}
 
-			replacers := []string{
-				fmt.Sprintf("$%s", groupName),
-				fmt.Sprintf("$<%s>", groupName),
-			}
-
-			for _, replacer := range replacers {
-				result = strings.ReplaceAll(result, replacer, submatch)
-			}
+			replacer := fmt.Sprintf("$%s", groupName)
+			result = strings.ReplaceAll(result, replacer, submatch)
 		}
 	}
 

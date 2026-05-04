@@ -41,7 +41,7 @@ func TestNamedGroups(t *testing.T) {
 	}
 
 	re := regexp.MustCompile(`my/(?P<prefix>\w*)/(?P<name>.*)`)
-	pattern := "my/new/$prefix_path_$<name>"
+	pattern := "my/new/$prefix_path_$name"
 
 	result := lib.GenerateChanges(lib.ChangeModeCopy, paths, re, pattern)
 
