@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/sftsrv/nameto/lib"
-	touchup "github.com/sftsrv/touchup/lib"
+	"github.com/sftsrv/nameto/internal"
+	touchup "github.com/sftsrv/touchup/pkg"
 )
 
 const usage = `nameto
@@ -125,19 +125,19 @@ func main() {
 
 		changeFile = string(file)
 	} else {
-		re, err := lib.CreateRegexp(*fromFlag)
+		re, err := internal.CreateRegexp(*fromFlag)
 		if err != nil {
 			panic(fmt.Errorf("Failed to parse given regexp '%s' with error: %v", *fromFlag, err))
 		}
 
-		paths := lib.FindPaths(re)
+		paths := internal.FindPaths(re)
 
-		var mode lib.ChangeMode = lib.ChangeModeCopy
+		var mode internal.ChangeMode = internal.ChangeModeCopy
 		if rename {
-			mode = lib.ChangeModeRename
+			mode = internal.ChangeModeRename
 		}
 
-		changes := lib.GenerateChanges(mode, paths, re, *toFlag)
+		changes := internal.GenerateChanges(mode, paths, re, *toFlag)
 		changeFile = changes.String()
 	}
 
@@ -157,7 +157,7 @@ func main() {
 		changeFile = result
 	}
 
-	changes, err := lib.ParseFile(changeFile)
+	changes, err := internal.ParseFile(changeFile)
 	if err != nil {
 		panic(fmt.Errorf("Error parsing change file: %v", err))
 	}
@@ -168,5 +168,5 @@ func main() {
 	}
 
 	fmt.Println("Executing changes")
-	lib.PersistChanges(changes)
+	internal.PersistChanges(changes)
 }
