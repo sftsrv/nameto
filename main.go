@@ -6,6 +6,7 @@ import (
 	"os"
 
 	"github.com/sftsrv/nameto/lib"
+	touchup "github.com/sftsrv/touchup/lib"
 )
 
 const usage = `nameto
@@ -93,7 +94,7 @@ const header = `# Lines starting with a # are ignored
 `
 
 func main() {
-	defaultEditor, _ := os.LookupEnv("EDITOR")
+	defaultEditor, _ := touchup.GetDefaultEditor()
 
 	helpFlag := flag.Bool("help", false, "show usage info")
 	fileFlag := flag.String("from-file", "", "use an existing changeset instead of creating one")
@@ -146,7 +147,7 @@ func main() {
 	if edit {
 		editor := *editorFlag
 		fmt.Println("Opening changes with", editor)
-		result, err := lib.EditFile(editor, header+changeFile)
+		result, err := touchup.EditFile(editor, "nameto", "txt", header+changeFile)
 		if err != nil {
 			panic(fmt.Errorf("Error editing file with %s with error: %v", *editorFlag, err))
 		}
